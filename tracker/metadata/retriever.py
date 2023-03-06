@@ -14,7 +14,7 @@ class LiftMetadataRetriever(LogawareMixin):
         self.fetcher = json_fetcher
 
     def lift_metadata(self, page: int):
-        lift_data = self.fetcher.fetch(f'{page}')
+        lift_data = self.fetcher.fetch(f'{page}?version=V2')
         self._log.debug(f'fetched [{len(lift_data)}] lift data')
         mapped_lift_data = list(map(lambda ld: LiftMetadata.from_json(ld), lift_data))
         return mapped_lift_data

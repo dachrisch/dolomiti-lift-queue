@@ -22,3 +22,7 @@ class LiftMetadataDatabaseRecorder(DatabaseRecorder):
     def get_metadata_collection(self):
         return self.client['dolomiti-ski']['lift-metadata']
 
+    def purge_data(self):
+        self._log.debug(f'deleting all data in collection [{self.get_metadata_collection().name}]')
+        self.get_metadata_collection().delete_many({})
+

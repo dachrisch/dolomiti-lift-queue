@@ -7,6 +7,8 @@ from dacite import from_dict
 
 @dataclass
 class LiftMetadata:
+    id:str
+    number:str
     name: Dict[str, str]
     type: Dict[str, Any]
     openingTime: str
