@@ -1,2 +1,3 @@
-pymongo
-requests
+pymongo # nosql db
+requests # make requests
+dacite # https://stackoverflow.com/questions/53376099/python-dataclass-from-a-nested-dict

@@ -1,22 +1,13 @@
 from datetime import datetime
 from typing import List, Dict
 
-from pymongo import MongoClient
-from pymongo.server_api import ServerApi
-
-from tracker.schema.mixin import LogawareMixin
-from tracker.schema.state import LiftState
+from tracker.database import DatabaseRecorder
+from tracker.state import LiftState
 
 
-class SnapshotDatabase(LogawareMixin):
+class LiftStateDatabaseRecorder(DatabaseRecorder):
     def __init__(self, password):
-        super().__init__()
-        self.client = MongoClient(
-            f'mongodb+srv://dachrisch:{password}@base1.v0w2j1s.mongodb.net/?retryWrites=true&w=majority',
-            server_api=ServerApi('1'))
-        # invoke connect
-        self.client.server_info()
-        self._log.info(f'connecting to {self.client.primary}')
+        super().__init__(password)
 
     def record(self, lift_state: LiftState) -> str:
         self._log.info(f'recording lift state [{lift_state}]')
