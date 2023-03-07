@@ -1,14 +1,14 @@
-from dataclasses import dataclass, asdict
+from dataclasses import dataclass
 from types import NoneType
 from typing import Dict, Any
 
-from dacite import from_dict
+from tracker.database import JsonDataclass
 
 
 @dataclass
-class LiftMetadata:
-    id:str
-    number:str
+class LiftMetadata(JsonDataclass):
+    id: str
+    number: str
     name: Dict[str, str]
     type: Dict[str, Any]
     openingTime: str
@@ -16,10 +16,3 @@ class LiftMetadata:
     length: int
     altitude: dict[str, Any]
     capacity: int | NoneType
-
-    @classmethod
-    def from_json(cls, lift_data: Dict[str, Any]):
-        return from_dict(data_class=LiftMetadata, data=lift_data)
-
-    def to_json(self):
-        return asdict(self)

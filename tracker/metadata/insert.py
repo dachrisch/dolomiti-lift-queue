@@ -26,7 +26,7 @@ if __name__ == '__main__':
     recorder = LiftMetadataDatabaseRecorder(getenv_or_fail('MONGODB_PASS'))
     recorder.purge_data()
     snapshot_taker = LiftMetadataInserter(
-        LiftMetadataRetriever(JsonEndpointFetcher.metadata_fetcher(getenv_or_fail('DOLOMITI_BEARER'))),
+        LiftMetadataRetriever(JsonEndpointFetcher.lift_metadata_fetcher(getenv_or_fail('DOLOMITI_BEARER'))),
         recorder
     )
     snapshot_taker.insert()

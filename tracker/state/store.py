@@ -1,32 +1,16 @@
 from datetime import datetime
-from typing import List, Dict
+from typing import List, Dict, Any
 
-from tracker.database import DatabaseRecorder
-from tracker.state import LiftState
+from tracker.database import DatabaseRecorder, JsonDataclass
 
 
 class LiftStateDatabaseRecorder(DatabaseRecorder):
     def __init__(self, password):
-        super().__init__(password)
+        super().__init__('dolomiti-ski', 'lift-occupation', password)
 
-    def record(self, lift_state: LiftState) -> str:
-        self._log.info(f'recording lift state [{lift_state}]')
-        snapshot_data = self.now_json() | lift_state.to_json()
-        return self.get_snapshot_collection().insert_one(snapshot_data).inserted_id
-
-    def record_all(self, lift_states: List[LiftState]) -> List[str]:
-        self._log.info(f'recording [{len(lift_states)}] lift states')
+    def _map_to_json(self, json_dataclasses: List[JsonDataclass]) -> List[Dict[Any, Any]]:
         now_json = self.now_json()
-        snapshot_data = map(lambda ls: now_json | ls.to_json(), lift_states)
-        return self.get_snapshot_collection().insert_many(snapshot_data).inserted_ids
-
-    def get_snapshot_collection(self):
-        return self.client['dolomiti-ski']['lift-occupation']
+        return list(map(lambda ls: now_json | ls.to_json(), json_dataclasses))
 
     def now_json(self) -> Dict[str, datetime]:
         return {'snapshotTime': datetime.now()}
-
-
-    def purge_data(self):
-        self._log.debug(f'deleting all data in collection [{self.get_snapshot_collection().name}]')
-        self.get_snapshot_collection().delete_many({})
