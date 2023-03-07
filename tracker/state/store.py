@@ -25,3 +25,8 @@ class LiftStateDatabaseRecorder(DatabaseRecorder):
 
     def now_json(self) -> Dict[str, datetime]:
         return {'snapshotTime': datetime.now()}
+
+
+    def purge_data(self):
+        self._log.debug(f'deleting all data in collection [{self.get_snapshot_collection().name}]')
+        self.get_snapshot_collection().delete_many({})

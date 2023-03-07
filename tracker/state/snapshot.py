@@ -25,5 +25,5 @@ if __name__ == '__main__':
     snapshot_taker = LiftStateSnapshotTaker(
         LiftStateRetriever(JsonEndpointFetcher.state_fetcher(getenv('DOLOMITI_BEARER', ''))),
         LiftStateDatabaseRecorder(getenv('MONGODB_PASS', ''))
-        )
+    )
     snapshot_taker.record_snapshot()
