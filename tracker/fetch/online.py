@@ -1,10 +1,11 @@
+import json
 from os import path
 from typing import Dict, Any
 
 import requests as requests
 
-from tracker.fetch import JsonFetcher
 from tracker import LogawareMixin
+from tracker.fetch import JsonFetcher
 
 
 class JsonEndpointFetcher(JsonFetcher, LogawareMixin):
@@ -26,5 +27,5 @@ class JsonEndpointFetcher(JsonFetcher, LogawareMixin):
         final_path = path.join(self.endpoint, part)
         self._log.info(f'loading json from [{final_path}]')
         response = requests.get(final_path, headers={'Authorization': f'Bearer {self.bearer}'})
-        assert response.status_code == 200, response
+        assert response.status_code == 200, json.dumps(response.json(), indent=2)
         return response.json()
