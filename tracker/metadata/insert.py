@@ -1,8 +1,7 @@
 import logging
 import sys
-from os import getenv
 
-from tracker import LogawareMixin
+from tracker import LogawareMixin, getenv_or_fail
 from tracker.fetch.online import JsonEndpointFetcher
 from tracker.metadata.retriever import LiftMetadataRetriever
 from tracker.metadata.store import LiftMetadataDatabaseRecorder
@@ -24,10 +23,10 @@ class LiftMetadataInserter(LogawareMixin):
 
 if __name__ == '__main__':
     logging.basicConfig(level=logging.DEBUG, format="%(asctime)s %(levelname)s %(message)s", stream=sys.stdout)
-    recorder = LiftMetadataDatabaseRecorder(getenv('MONGODB_PASS', ''))
+    recorder = LiftMetadataDatabaseRecorder(getenv_or_fail('MONGODB_PASS'))
     recorder.purge_data()
     snapshot_taker = LiftMetadataInserter(
-        LiftMetadataRetriever(JsonEndpointFetcher.metadata_fetcher(getenv('DOLOMITI_BEARER', ''))),
+        LiftMetadataRetriever(JsonEndpointFetcher.metadata_fetcher(getenv_or_fail('DOLOMITI_BEARER'))),
         recorder
     )
     snapshot_taker.insert()

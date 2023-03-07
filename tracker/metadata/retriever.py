@@ -1,11 +1,10 @@
 import logging
 import sys
-from os import getenv
 
+from tracker import LogawareMixin, getenv_or_fail
 from tracker.fetch import JsonFetcher
 from tracker.fetch.online import JsonEndpointFetcher
 from tracker.metadata import LiftMetadata
-from tracker import LogawareMixin
 
 
 class LiftMetadataRetriever(LogawareMixin):
@@ -22,5 +21,5 @@ class LiftMetadataRetriever(LogawareMixin):
 
 if __name__ == '__main__':
     logging.basicConfig(level=logging.DEBUG, format="%(asctime)s %(levelname)s %(message)s", stream=sys.stdout)
-    metadata_retriever = LiftMetadataRetriever(JsonEndpointFetcher.metadata_fetcher(getenv('DOLOMITI_BEARER', '')))
+    metadata_retriever = LiftMetadataRetriever(JsonEndpointFetcher.metadata_fetcher(getenv_or_fail('DOLOMITI_BEARER')))
     print(metadata_retriever.lift_metadata(4))

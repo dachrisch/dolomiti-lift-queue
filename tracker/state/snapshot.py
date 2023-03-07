@@ -1,9 +1,8 @@
 import logging
 import sys
-from os import getenv
 
+from tracker import LogawareMixin, getenv_or_fail
 from tracker.fetch.online import JsonEndpointFetcher
-from tracker import LogawareMixin
 from tracker.state.retriever import LiftStateRetriever
 from tracker.state.store import LiftStateDatabaseRecorder
 
@@ -23,7 +22,7 @@ class LiftStateSnapshotTaker(LogawareMixin):
 if __name__ == '__main__':
     logging.basicConfig(level=logging.DEBUG, format="%(asctime)s %(levelname)s %(message)s", stream=sys.stdout)
     snapshot_taker = LiftStateSnapshotTaker(
-        LiftStateRetriever(JsonEndpointFetcher.state_fetcher(getenv('DOLOMITI_BEARER', ''))),
-        LiftStateDatabaseRecorder(getenv('MONGODB_PASS', ''))
+        LiftStateRetriever(JsonEndpointFetcher.state_fetcher(getenv_or_fail('DOLOMITI_BEARER'))),
+        LiftStateDatabaseRecorder(getenv_or_fail('MONGODB_PASS'))
     )
     snapshot_taker.record_snapshot()
