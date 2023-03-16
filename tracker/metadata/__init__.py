@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 from types import NoneType
-from typing import Dict, Any
+from typing import Dict, Any, List
 
 from tracker.database import JsonDataclass
 
@@ -16,3 +16,4 @@ class LiftMetadata(JsonDataclass):
     length: int
     altitude: dict[str, Any]
     capacity: int | NoneType
+    coordinates: List[Dict[str, float]]
