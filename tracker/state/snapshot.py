@@ -20,7 +20,7 @@ class LiftStateSnapshotTaker(LogawareMixin):
 
 
 if __name__ == '__main__':
-    logging.basicConfig(level=logging.DEBUG, format="%(asctime)s %(levelname)s %(message)s", stream=sys.stdout)
+    logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(message)s", stream=sys.stdout)
     snapshot_taker = LiftStateSnapshotTaker(
         LiftStateRetriever(JsonEndpointFetcher.state_fetcher(getenv_or_fail('DOLOMITI_BEARER'))),
         LiftStateDatabaseRecorder(getenv_or_fail('MONGODB_PASS'))
